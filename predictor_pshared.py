@@ -32,3 +32,15 @@ class PSharePredictor:
             self.pht[pht_index] = max(self.pht[pht_index] - 1,0)
         
         self.global_history = ((self.global_history << 1) | outcome) & ((2 ** self.history_bits) - 1)
+
+#ejemplo de uso
+predictor = PSharePredictor(p_bits = 2, history_bits = 4)
+
+#simulación de algunos casos de predicción
+program_counter = [100, 200, 300, 400, 500]
+branch_outcome = [1, 0, 3, 2, 1]
+
+for pc, outcome in zip(program_counter, branch_outcome):
+    prediction = prediction.predict(pc)
+    predictor.update(pc, outcome)
+    print(f"PC: {pc} outcome: {outcome} prediction: {prediction}")
