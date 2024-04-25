@@ -11,7 +11,7 @@ class PSharePredictor:
         self.history_bits = history_bits
         self.bht = [0] * (2 ** history_bits) #historia de branches
         self.pht = [0] * (2 ** p_bits) #historia de patrones
-        self.global_history = 0
+        self.global_history = 0 #en este caso no necesitamos historia global
     
     def predict(self, pc):
         pht_index = self.global_history % len(self.pht)
@@ -41,6 +41,6 @@ program_counter = [100, 200, 300, 400, 500]
 branch_outcome = [1, 0, 3, 2, 1]
 
 for pc, outcome in zip(program_counter, branch_outcome):
-    prediction = prediction.predict(pc)
+    prediction = predictor.predict(pc) #acá hay un error
     predictor.update(pc, outcome)
     print(f"PC: {pc} outcome: {outcome} prediction: {prediction}")
