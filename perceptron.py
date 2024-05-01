@@ -22,8 +22,11 @@ class perceptron:
 
     def print_info(self):
         print("Parámetros del predictor:")
-        print("\tTipo de predictor:\t\t\tPerceptron")
-
+        print("\tTipo de predictor:\t\t\t\t\tPerceptron")
+        print("\tBits de la historia global:\t\t\t\t", str(len(self.history_reg)))
+        print("\tCantidad de entradas en la tabla de perceptrones:\t", str(len(self.perceptron_table)))
+        print("\tLongitud de cada entrada de la tabla de perceptrones:\t", str(len(self.perceptron_table[0])))
+        
 
     def print_stats(self):
         print("Resultados de la simulación")
