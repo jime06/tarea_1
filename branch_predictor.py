@@ -39,7 +39,7 @@ elif options.branch_predictor_type == "2":
 #Si --bp 3 entonces usamos perceptron
 if options.branch_predictor_type == "3":
     #Deben inicializar perceptron con los parámetros necesarios
-    branch_predictor = perceptron()
+    branch_predictor = perceptron(int(options.bits_to_index),int(options.global_history_size))
     branch_predictor.print_info()  
 #Si --bp 4 entonces usamos el que ustedes proponen
 if options.branch_predictor_type == "4":
@@ -48,7 +48,7 @@ if options.branch_predictor_type == "4":
     branch_predictor.print_info()
 
 
-#i = 0  #DEBUG
+i = 0  #DEBUG
 #Acá abrimos el trace 
 with gzip.open(options.TRACE_FILE,'rt') as trace_fh:
     #Y luego lo recorremos, línea por línea
@@ -56,7 +56,6 @@ with gzip.open(options.TRACE_FILE,'rt') as trace_fh:
         #Quitamos espacios extra al final y extraemos el PC y el resultado del salto
         line = line.rstrip()
         PC,result = line.split(" ")
-        pdb.set_trace()
         #Todos los predictores deben tener 2 funciones
         #1. prediction: que con el estado actual del predictor y el PC del salto 
         #               predicen si el salto se tomará, o no
@@ -69,9 +68,9 @@ with gzip.open(options.TRACE_FILE,'rt') as trace_fh:
         
         #Este código de abajo es para sólo hacer las primeras 25 líneas del programa, de forma que sea más
         #fácil ir revisando el progreso que van haciendo 
-        i+=1           #DEBUG
-        if i == 25:    #DEBUG
-            break      #DEBUG
+#        i+=1           #DEBUG
+#        if i == 25:    #DEBUG
+#            break      #DEBUG
         
 #Una vez finalizado el archivo, se imprimen las estadísticas de la corrida
 branch_predictor.print_stats()

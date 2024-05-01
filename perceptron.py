@@ -1,4 +1,5 @@
 import math     # A usar: floor
+import pdb      # A usar: set_trace
 
 class perceptron:
     def __init__(self, bits_to_index, global_history_size):
@@ -8,11 +9,16 @@ class perceptron:
         self.total_taken_pred_not_taken = 0
         self.total_not_taken_pred_taken = 0
         self.total_not_taken_pred_not_taken = 0
-        self.history_reg = [0] * global_history_size        # BR history table
-        # Vector de pesos, el primero siempre es 1
-        self.perceptron_weights = [1] + [0] * (global_history_size - 1)
-        self.perceptron_table = [0] * (2 ** bits_to_index)  # Tabla perceptrón
-        self.theta = math.floor((1.93 * global_history_size) + 14)  # Umbral
+        self.history_reg = [-1] * global_history_size        # BR history table inicializa en -1
+        self.perceptron_table = list()  # Se genera la tabla de perceptrones
+        for i in range(2 ** bits_to_index):
+            hist_temp = []
+            for j in range(global_history_size + 1):
+                hist_temp.append(0) # Inicializa en 0
+                                    
+            self.perceptron_table.append(hist_temp)
+        self.theta = math.floor(1.93 * global_history_size + 14)  # Umbral
+        self.y_out = 0  # Salida anterior del cálculo de "y"
 
     def print_info(self):
         print("Parámetros del predictor:")
@@ -52,16 +58,20 @@ class perceptron:
         """
         # Aquí va la célula del perceptrón
         index = int(PC) % len(self.perceptron_table)     # Índice del PC
-        y_res = self.perceptron_weights[0]          # Variable "y" del resultado
+        y_res = self.perceptron_table[index][0]  # Variable "y" del resultado
+                                                 # Bias 
         # Se empieza por calcular el resultado del perceptrón
-        for i in range(1, len(self.history_reg)):
-            y_res += self.history_reg[i] * self.perceptron_weights
+        for i in range(len(self.history_reg)):
+            y_res += self.history_reg[i] * self.perceptron_table[index][i + 1]
+
+        # Valor anterior de la suma de "y" para la condición de theta
+        self.y_out = y_res
 
         # Luego, se decide si se toma o no el salto
-        if (y_res > 0):
-            resultado = "T"
-        else:
+        if (y_res < 0):
             resultado = "N"
+        else:
+            resultado = "T"
 
         return resultado
   
@@ -69,7 +79,10 @@ class perceptron:
     def update(self, PC, result, prediction):
         """Método que evalúa el resultado de la predicción y entrena los pesos.
 
-            
+            Se encarga de evaluar el resultado de la predicción respecto a qué
+        hizo realmente el procesador. Entrena el vector de pesos de los
+        perceptrones en caso de requerirlo. Además, actualiza las estadísticas
+        que se reportan con la ejecución del programa.
 
         Parameters
         ----------
@@ -77,63 +90,58 @@ class perceptron:
             Permite acceder a las variables internas de la clase.
 
         PC : string
-            Valor del contador de programa en el que se predicirá el salto.
+            Valor del contador de programa en el que se evaluará la predicción
+
+        result : string
+            Resultado final del branch.
+
+        prediction : string
+            Resultado de la predicción del perceptrón.
 
         Returns
         -------
-        resultado : string
-            Resultado de la predicción realizada.
-
+        None
         """
+        index = int(PC) % len(self.perceptron_table)     # Índice del PC
+        # Variable t para el entreno de los pesos
+        if (result == "T"):             # Variable para el cálculo de pesos
+            t = 1                       # nuevos
+        else: 
+            t = -1
 
+        # Condición de signo
+        if (((self.y_out > 0) and (t > 0)) or ((self.y_out < 0) and (t < 0))):
+            signo = False
+        else:
+            signo = True
 
-        #Escriba aquí el código para actualizar
-        #La siguiente línea es solo para que funcione la prueba
-        #Quítela para implementar su código
-        a = PC
+        # Entrenamiento de los pesos:
+        # Si se cumplen las condiciones, se entrena el valor de bias y se
+        # recorre la longitud de la historia global y se suma al valor de
+        # cada peso el producto de t por la entrada iterada de BHT
+        if (signo or (abs(self.y_out) <= self.theta)):
+            self.perceptron_table[index][0] += t
+            for i in range(len(self.history_reg)):
+                self.perceptron_table[index][i + 1] += t * self.history_reg[i]
+                
 
+        # Se actualiza el registro desplazante de la historia global
+        if (result == "T"):
+            self.history_reg.insert(0, 1)
+        else:
+            self.history_reg.insert(0, -1)  # Se usa -1 para los no tomados
+        self.history_reg.pop()
 
+        # Código del ejemplo del profesor: actualiza las estadísitcas
+        if result == "T" and result == prediction:
+            self.total_taken_pred_taken += 1
+        elif result == "T" and result != prediction:
+            self.total_taken_pred_not_taken += 1
+        elif result == "N" and result == prediction:
+            self.total_not_taken_pred_not_taken += 1
+        else:
+            self.total_not_taken_pred_taken += 1
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        # Se suma 1 a la cantidad de predicciones hechas
+        self.total_predictions += 1
 
