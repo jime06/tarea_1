@@ -24,6 +24,7 @@ class perceptron:
         print("Parámetros del predictor:")
         print("\tTipo de predictor:\t\t\tPerceptron")
 
+
     def print_stats(self):
         print("Resultados de la simulación")
         print("\t# branches:\t\t\t\t\t\t"+str(self.total_predictions))
