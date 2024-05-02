@@ -1,36 +1,124 @@
+import pdb
+#código de simluador para un predictor p-shared.
+"""
+predictor p-shared: utiliza historia local. Donde tenemos una tabla con varios registros de historia. Además, mediante
+el PC del branch se indexa una tabla que contiene un registro deslizante con la historia de los saltos que han ocurrido
+para branches con un PC que terminan en los índices 00, 01, 10, 11.
+"""
+
 class pshared:
-    def __init__(self):
-        #Escriba aquí el init de la clase
+    def __init__(self, bits_to_index, local_history_size):
+        self.bits_to_index = bits_to_index
+        self.local_history_size = local_history_size
+        pht_vals = [0 for i in range(2**bits_to_index)] # Vals de inicio pht
+        pht_indx = [i for i in range(2**bits_to_index)] # Índices de pht
+        self.pht = dict(zip(pht_indx, pht_vals))    # Se genera la tabla como
+                                                    # diccionario
+        pht_vals = [0 for i in range(2**local_history_size)] # Vals de inicio bht
+        pht_indx = [i for i in range(2**local_history_size)] # Índices de bht
+        self.bht = dict(zip(pht_indx, pht_vals))    # Se genera la tabla como
+                                                    # diccionario
+        # pdb.set_trace()
         self.total_predictions = 0
         self.total_taken_pred_taken = 0
         self.total_taken_pred_not_taken = 0
         self.total_not_taken_pred_taken = 0
         self.total_not_taken_pred_not_taken = 0
 
-    def print_info(self):
+    def print_info(self): #información del predictor
         print("Parámetros del predictor:")
-        print("\tTipo de predictor:\t\t\tPerceptron")
+        print("\tTipo de predictor: \t\t\tpshared")
 
     def print_stats(self):
         print("Resultados de la simulación")
-        print("\t# branches:\t\t\t\t\t\t"+str(self.total_predictions))
-        print("\t# branches tomados predichos correctamente:\t\t"+str(self.total_taken_pred_taken))
-        print("\t# branches tomados predichos incorrectamente:\t\t"+str(self.total_taken_pred_not_taken))
-        print("\t# branches no tomados predichos correctamente:\t\t"+str(self.total_not_taken_pred_not_taken))
-        print("\t# branches no tomados predichos incorrectamente:\t"+str(self.total_not_taken_pred_taken))
+        print("\t# branches: \t\t\t\t\t\t" +str(self.total_predictions))
+        print("\t# branches tomados predichos correctamente: \t\t" +str(self.total_taken_pred_taken))
+        print("\t# branches tomados predichos incorrectamente: \t\t" +str(self.total_taken_pred_not_taken))
+        print("\t# branches no tomados predichos correctamente: \t\t" +str(self.total_not_taken_pred_not_taken))
+        print("\t# branches no tomados predichos incorrectamente: \t\t" +str(self.total_not_taken_pred_taken))
         perc_correct = 100*(self.total_taken_pred_taken+self.total_not_taken_pred_not_taken)/self.total_predictions
         formatted_perc = "{:.3f}".format(perc_correct)
-        print("\t% predicciones correctas:\t\t\t\t"+str(formatted_perc)+"%")
+        print("\t% predicciones correctas: \t\t\t\t" +str(formatted_perc)+ "%")
 
-    def predict(self, PC):
-        #Escriba aquí el código para predecir
-        #La siguiente línea es solo para que funcione la prueba
-        #Quítela para implementar su código
-        return "T"
-  
 
-    def update(self, PC, result, prediction):
-        #Escriba aquí el código para actualizar
-        #La siguiente línea es solo para que funcione la prueba
-        #Quítela para implementar su código
-        a = PC
+    def predict(self, PC): #acá se programa el funcionamiento del predictor
+        # Índice de la tabla de historia local
+        index_bht = int(PC) % len(self.bht)
+
+        # Se obtiene el registro desplazante de la historia local,
+        # como un valor entero. Este permite indexar la tabla pht
+        local_hist = self.bht[index_bht]
+
+        # Finalmente, se obtiene el valor del predictor de 2 bits
+        pht_table_entry = self.pht[local_hist]
+
+        # Con este valor, se puede realizar la predicción
+        if (pht_table_entry in [2, 3]):
+            return "T"
+        else:
+            return "N"
+
+
+    def truncated_sum(self, valor, local_hist):
+        # Realiza la suma truncada de valores a la tabla de predictores
+        val_tmp = self.pht[local_hist] + valor
+        if (val_tmp >= 3):
+            self.pht[local_hist] = 3
+        elif (val_tmp <= 0):
+            self.pht[local_hist] = 0
+        else: 
+            self.pht[local_hist] = val_tmp
+
+
+    def update(self, PC, result, prediction): #acá evaluamos el resultado de la predicción
+        # Índice de la tabla de historia local
+        index_bht = int(PC) % len(self.bht)
+
+        # Se obtiene el registro desplazante de la historia local,
+        # como un valor entero. Este permite indexar la tabla pht
+        local_hist = self.bht[index_bht]
+
+        # Finalmente, se obtiene el valor del predictor de 2 bits
+        pht_table_entry = self.pht[local_hist]
+
+        # Con los datos listos, se aplica la suma truncada
+        if (result == "T"):
+            self.truncated_sum(1, local_hist)
+        else:
+            self.truncated_sum(-1, local_hist)
+
+        # TODO implementar esto con operaciones bitwise
+        # FALTA TERMINAR PERO YA SIRVE
+        # Finalmente, se hace el shift lógico para agregar el
+        # último bit de resultado a la historia local
+        # Actualiza el registro desplazante de la historia local
+        # El shift se hace al multiplicar por 2 y sumar 1 después 
+        # en caso de que se haya tomado el salto.
+        # Así 0b00111 << 1 = 0b01110, que es igual a d7 * 2 = d14.
+        # Sin embargo, la longitud, en bits de la historia local
+        # se tiene que truncar mediante la operación de módulo respecto
+        # a la potencia de 2 ** (len(self.bht) - 1). Se resta 1 para
+        # que no se dé ningún overflow respecto a la capacidad máxima
+        # de la historia local y la operación es análoga a hacer un shift en
+        # un registro de desplazamiento
+        # Hay una forma mañosa de implementar esto con str y bin, tratar de
+        # hacer eso y truncar la long con len(self.bht)
+        self.bht[index_bht] = (self.bht[index_bht] % 2**(len(self.bht) - 1)) * 2
+
+        if result == "T":
+            self.bht[index_bht] += 1 
+        #actualiza stats
+        if result == "T" and result == prediction:
+            self.total_taken_pred_taken += 1
+        
+        elif result == "T" and result != prediction:
+            self.total_taken_pred_not_taken += 1
+
+        elif result == "N" and result == prediction:
+            self.total_not_taken_pred_not_taken += 1
+
+        else:
+            self.total_not_taken_pred_taken += 1
+
+        self.total_predictions += 1
+

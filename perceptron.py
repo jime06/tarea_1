@@ -15,10 +15,13 @@ class perceptron:
             hist_temp = []
             for j in range(global_history_size + 1):
                 hist_temp.append(0) # Inicializa en 0
-                                    
             self.perceptron_table.append(hist_temp)
         self.theta = math.floor(1.93 * global_history_size + 14)  # Umbral
         self.y_out = 0  # Salida anterior del cálculo de "y"
+        # Inicia DEBUG
+#        self.max = 0
+#        self.min = 0
+        # Fin DEBUG
 
     def print_info(self):
         print("Parámetros del predictor:")
@@ -70,6 +73,22 @@ class perceptron:
 
         # Valor anterior de la suma de "y" para la condición de theta
         self.y_out = y_res
+
+        # Inicio DEBUG
+#        if ((y_res > 0) and (y_res > self.max)):
+#            self.max = y_res
+#        elif ((y_res < 0) and (y_res < self.min)):
+#            self.min = y_res
+
+#        for i in range(len(self.perceptron_table[index])):
+#            if ((i > 0) and (i > self.max)):
+#                self.max = i
+#            elif ((i < 0) and (i < self.min)):
+#                self.min = i
+
+#        print("max: ", self.max, "min: ", self.min)
+        # Fin DEBUG
+
 
         # Luego, se decide si se toma o no el salto
         if (y_res < 0):
