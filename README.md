@@ -4,9 +4,9 @@
     - Juan Ignacio Hernández
 
 ## Descripción de los archivos desarrollados:
-    - ie0521_bp.py: Predictor propuesto por los estudiantes, modelo de matriz en tres dimensiones utilizando perceptrones.
-    - perceptron.py: Predictor basado en perceptrones propuesto por Jiménez y Lin.
-    - pshared.py: Predictor de tipo p-share visto en clase implementado con tablas.
+ - ie0521_bp.py: Predictor propuesto por los estudiantes, modelo de matriz en tres dimensiones utilizando perceptrones.
+ - perceptron.py: Predictor basado en perceptrones propuesto por Jiménez y Lin.
+ - pshared.py: Predictor de tipo p-share visto en clase implementado con tablas.
 
 Todos los archivos corren en python, no se desarrolló nada en C.
 
