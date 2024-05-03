@@ -1,4 +1,4 @@
-import pdb
+# import pdb
 #código de simluador para un predictor p-shared.
 """
 predictor p-shared: utiliza historia local. Donde tenemos una tabla con varios registros de historia. Además, mediante
@@ -10,12 +10,12 @@ class pshared:
     def __init__(self, bits_to_index, local_history_size):
         self.bits_to_index = bits_to_index
         self.local_history_size = local_history_size
-        pht_vals = [0 for i in range(2**bits_to_index)] # Vals de inicio pht
-        pht_indx = [i for i in range(2**bits_to_index)] # Índices de pht
+        pht_vals = [0 for i in range(2**local_history_size)] # Vals de inicio pht
+        pht_indx = [i for i in range(2**local_history_size)] # Índices de pht
         self.pht = dict(zip(pht_indx, pht_vals))    # Se genera la tabla como
                                                     # diccionario
-        pht_vals = [0 for i in range(2**local_history_size)] # Vals de inicio bht
-        pht_indx = [i for i in range(2**local_history_size)] # Índices de bht
+        pht_vals = [0 for i in range(2**bits_to_index)] # Vals de inicio bht
+        pht_indx = [i for i in range(2**bits_to_index)] # Índices de bht
         self.bht = dict(zip(pht_indx, pht_vals))    # Se genera la tabla como
                                                     # diccionario
         # pdb.set_trace()

@@ -1,5 +1,5 @@
 import math     # A usar: floor
-import pdb      # A usar: set_trace
+# import pdb      # A usar: set_trace
 
 class perceptron:
     def __init__(self, bits_to_index, global_history_size):

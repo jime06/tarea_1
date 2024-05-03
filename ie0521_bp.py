@@ -1,5 +1,5 @@
 import math     # A usar: floor
-import pdb      # A usar: set_trace
+# import pdb      # A usar: set_trace
 
 class ie0521_bp:
     def __init__(self):

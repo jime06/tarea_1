@@ -1,0 +1,56 @@
+echo "Realizando pruebas para el pshared"
+python3 branch_predictor.py --bp 2 -g 2 -n 4
+python3 branch_predictor.py --bp 2 -g 2 -n 8
+python3 branch_predictor.py --bp 2 -g 2 -n 12
+python3 branch_predictor.py --bp 2 -g 2 -n 16
+python3 branch_predictor.py --bp 2 -g 2 -n 20
+python3 branch_predictor.py --bp 2 -g 6 -n 4
+python3 branch_predictor.py --bp 2 -g 6 -n 8
+python3 branch_predictor.py --bp 2 -g 6 -n 12
+python3 branch_predictor.py --bp 2 -g 6 -n 16
+python3 branch_predictor.py --bp 2 -g 6 -n 20
+python3 branch_predictor.py --bp 2 -g 8 -n 4
+python3 branch_predictor.py --bp 2 -g 8 -n 8
+python3 branch_predictor.py --bp 2 -g 8 -n 12
+python3 branch_predictor.py --bp 2 -g 8 -n 16
+python3 branch_predictor.py --bp 2 -g 8 -n 20
+python3 branch_predictor.py --bp 2 -g 16 -n 4
+python3 branch_predictor.py --bp 2 -g 16 -n 8
+python3 branch_predictor.py --bp 2 -g 16 -n 12
+python3 branch_predictor.py --bp 2 -g 16 -n 16
+python3 branch_predictor.py --bp 2 -g 16 -n 20
+python3 branch_predictor.py --bp 2 -g 20 -n 4
+python3 branch_predictor.py --bp 2 -g 20 -n 8
+python3 branch_predictor.py --bp 2 -g 20 -n 12
+python3 branch_predictor.py --bp 2 -g 20 -n 16
+python3 branch_predictor.py --bp 2 -g 20 -n 20
+
+echo "Realizando pruebas para el de perceptrones"
+python3 branch_predictor.py --bp 3 -g 2 -n 4
+python3 branch_predictor.py --bp 3 -g 2 -n 8
+python3 branch_predictor.py --bp 3 -g 2 -n 12
+python3 branch_predictor.py --bp 3 -g 2 -n 16
+python3 branch_predictor.py --bp 3 -g 2 -n 20
+python3 branch_predictor.py --bp 3 -g 6 -n 4
+python3 branch_predictor.py --bp 3 -g 6 -n 8
+python3 branch_predictor.py --bp 3 -g 6 -n 12
+python3 branch_predictor.py --bp 3 -g 6 -n 16
+python3 branch_predictor.py --bp 3 -g 6 -n 20
+python3 branch_predictor.py --bp 3 -g 8 -n 4
+python3 branch_predictor.py --bp 3 -g 8 -n 8
+python3 branch_predictor.py --bp 3 -g 8 -n 12
+python3 branch_predictor.py --bp 3 -g 8 -n 16
+python3 branch_predictor.py --bp 3 -g 8 -n 20
+python3 branch_predictor.py --bp 3 -g 16 -n 4
+python3 branch_predictor.py --bp 3 -g 16 -n 8
+python3 branch_predictor.py --bp 3 -g 16 -n 12
+python3 branch_predictor.py --bp 3 -g 16 -n 16
+python3 branch_predictor.py --bp 3 -g 16 -n 20
+python3 branch_predictor.py --bp 3 -g 20 -n 4
+python3 branch_predictor.py --bp 3 -g 20 -n 8
+python3 branch_predictor.py --bp 3 -g 20 -n 12
+python3 branch_predictor.py --bp 3 -g 20 -n 16
+python3 branch_predictor.py --bp 3 -g 20 -n 20
+
+echo "Realizando pruebas para el de perceptrones en 3D"
+python3 branch_predictor.py --bp 4
