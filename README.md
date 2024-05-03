@@ -11,6 +11,7 @@
 Todos los archivos corren en python, no se desarrolló nada en C.
 
 ## Ambiente de pruebas utilizado
+ - Lenguaje escogido: python
  - Versión de python: 3.11.8
  - Dependencias: math
  - Sistema operativo utilizado: Manjaro Linux
@@ -24,9 +25,9 @@ Todos los archivos corren en python, no se desarrolló nada en C.
     - -n: Cantidad de bits del PC utilizados para indexar.
 
 ## Ejemplo de comandos ejecutados
- - python3 branch_predictor.py  --bp 2 -n 12 -g 16
- - python3 branch_predictor.py  --bp 3 -n 4 -g 8
- - python3 branch_predictor.py  --bp 4
+ - `python3 branch_predictor.py  --bp 2 -n 12 -g 16`
+ - `python3 branch_predictor.py  --bp 3 -n 4 -g 8`
+ - `python3 branch_predictor.py  --bp 4`
 
 ## Cómo ejcutar la suite de pruebas utilizada
  - Correr: `bash Comandos_Resultados.txt` en la raíz del directorio del repositorio.
