@@ -1,5 +1,4 @@
 import pdb
-import math
 #código de simluador para un predictor p-shared.
 """
 predictor p-shared: utiliza historia local. Donde tenemos una tabla con varios registros de historia. Además, mediante
@@ -10,13 +9,13 @@ para branches con un PC que terminan en los índices 00, 01, 10, 11.
 class pshared:
     def __init__(self, bits_to_index, local_history_size):
         self.bits_to_index = bits_to_index
-        self.local_history_size = local_history_size    # Para luego indexar pht
-        pht_vals = [0 for i in range(2**local_history_size)] # Vals inicio pht
-        pht_indx = [i for i in range(2**local_history_size)] # Índices de pht
+        self.local_history_size = local_history_size
+        pht_vals = [0 for i in range(2**bits_to_index)] # Vals de inicio pht
+        pht_indx = [i for i in range(2**bits_to_index)] # Índices de pht
         self.pht = dict(zip(pht_indx, pht_vals))    # Se genera la tabla como
                                                     # diccionario
-        pht_vals = [0 for i in range(2**bits_to_index)] # Vals de inicio bht
-        pht_indx = [i for i in range(2**bits_to_index)] # Índices de bht
+        pht_vals = [0 for i in range(2**local_history_size)] # Vals de inicio bht
+        pht_indx = [i for i in range(2**local_history_size)] # Índices de bht
         self.bht = dict(zip(pht_indx, pht_vals))    # Se genera la tabla como
                                                     # diccionario
         # pdb.set_trace()
@@ -29,6 +28,8 @@ class pshared:
     def print_info(self): #información del predictor
         print("Parámetros del predictor:")
         print("\tTipo de predictor: \t\t\tpshared")
+        print("\tBits de la indexados del PC: \t\t", self.bits_to_index)
+        print("\tBits de la historia local: \t\t", self.local_history_size)
 
     def print_stats(self):
         print("Resultados de la simulación")
