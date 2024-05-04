@@ -90,23 +90,22 @@ class pshared:
             self.truncated_sum(-1, local_hist)
 
         # Finalmente, se hace el shift lógico para agregar el
-        # último bit de resultado a la historia local
-        # Actualiza el registro desplazante de la historia local
-        # El shift se hace al multiplicar por 2 y sumar 1 después 
-        # en caso de que se haya tomado el salto.
-        # Así 0b00111 << 1 = 0b01110, que es igual a d7 * 2 = d14.
-        # Sin embargo, la longitud, en bits de la historia local
-        # se tiene que truncar mediante la operación de módulo respecto
-        # a la potencia de 2 ** (.local_history_size - 1). Se resta 1 para
-        # que no se dé ningún overflow respecto a la capacidad máxima
-        # de la historia local y la operación es análoga a hacer un shift en
-        # un registro de desplazamiento
-        # Hay una forma mañosa de implementar esto con str y bin, tratar de
-        # hacer eso y truncar la long con len(self.bht)
-        self.bht[index_bht] = (self.bht[index_bht] % 2**(self.local_history_size-1)) * 2
-
+        # último resultado a la historia local
+        # Es mañoso, yo sé, pero sirve
+        self.bht[index_bht] = bin(self.bht[index_bht])[2:]  # Se obtiene el
+                                                            # valor binario
+                                                            # como una string
+        # Se llena de ceros a la dimensión de la historia local
+        self.bht[index_bht] = self.bht[index_bht].zfill(self.local_history_size)
+        # Se agrega un cero o un no dependiendo del resultado
         if result == "T":
-            self.bht[index_bht] += 1 
+            self.bht[index_bht] = (self.bht[index_bht])[1:] + "1"
+        else:
+            self.bht[index_bht] = (self.bht[index_bht])[1:] + "0"
+        # Se vuelve a base 10
+        self.bht[index_bht] = int(self.bht[index_bht], 2)
+
+
         #actualiza stats
         if result == "T" and result == prediction:
             self.total_taken_pred_taken += 1

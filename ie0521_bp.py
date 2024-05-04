@@ -4,7 +4,7 @@ import math     # A usar: floor
 class ie0521_bp:
     def __init__(self):
         # Valores codeados directamente
-        global_history_size = 20
+        global_history_size = 14
         bits_to_index = 9
         self.vmax = 7
         self.vmin = -1 * self.vmax
