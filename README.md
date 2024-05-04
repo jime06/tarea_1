@@ -9,6 +9,7 @@
  - pshared.py: Predictor de tipo p-share visto en clase implementado con tablas.
 
 Todos los archivos corren en python, no se desarrolló nada en C.
+También se incluyó el reporte de la tarea.
 
 ## Ambiente de pruebas utilizado
  - Lenguaje escogido: python
